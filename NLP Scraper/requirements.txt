@@ -1,0 +1,3 @@
+bs4
+scrapy==2.6.1
+scrapy-useragents
