@@ -1,7 +1,6 @@
 import os
 import csv
 import time
-from turtle import down
 import scrapy
 import logging
 import unicodedata
@@ -32,49 +31,54 @@ class PaperSpider(scrapy.Spider):
         
         self.setup()
         
+        # For hugging face
         start_urls = []
-        start_urls.append("https://aclanthology.org/")
+        
+        start_urls.append("https://huggingface.co/docs/transformers/model_doc/gpt2")
 
+        # start_urls = []
+        # start_urls.append("https://pytorch.org/docs/stable/nn.html")
         logging.log(logging.INFO, "Loading requests")
         for url in start_urls:
-            yield scrapy.Request(url=url, callback=self.parse_journals, errback=self.errback_httpbin, dont_filter=True)
+            yield scrapy.Request(url=url, callback=self.parse_nn_modules, errback=self.errback_httpbin, dont_filter=True)
 
-    def parse_journals(self, response):
-        urls = []
-        fpath = "//table[1]/tbody/tr/td["
-        for i in range(1, 14):
-            url_xpath = fpath + str(i) + "]/a/@href"
-            url_links = response.xpath(url_xpath).getall()
-            urls.extend(url_links)
 
-        for i in urls:
+    # //dd[@class='field-odd']/ul[@class='simple']/li/p/strong
+    def parse_nn_modules(self, response):
+
+        # For hugging face
+        fpath = "//a[@class='text-gray-500 pr-2 hover:text-black dark:hover:text-gray-300 py-1 transform transition-all hover:translate-x-px first:mt-1 last:mb-4 pl-2 ml-6']/@href"
+        
+        # For pytorch
+        print('Response', response)
+
+        # fpath = "//table[@class='longtable docutils colwidths-auto align-default']/tbody/tr[@class='row-odd']/td/p/a[@class='reference internal has-code']/@href"
+        url_links = response.xpath(fpath).getall()
+        print('############', url_links)
+        for i in url_links:
             url = DOMAIN_URL + i
-            yield scrapy.Request(url = url, callback=self.parse, errback=self.errback_httpbin, dont_filter=True)
+            print('#####', url)
+            yield scrapy.Request(url = url, callback=self.parse_module, errback=self.errback_httpbin, dont_filter=True)
 
-    def parse(self, response):
-        papers = response.xpath("//strong/a[@class='align-middle']/@href").getall()
-        for paper in papers:
-            paperUrl = DOMAIN_URL + paper
-            yield scrapy.Request(url=paperUrl, callback=self.parse_paper_details, errback = self.errback_httpbin, dont_filter = True)
+    def parse_module(self, response):
 
+        # For hugging face
+        module_name = response.xpath("//h1[@class='relative group']/span/text()").get()
+        module_params = response.xpath("//span[@class='group flex space-x-1.5 items-start']/span/strong/text()").getall()
 
-    def parse_paper_details(self, response, **kwargs):
-        try:
-            paperName = response.xpath("//h2[@id='title']/a/text()").extract()[0]
-            downloadUrl = response.xpath("//a[@class='btn btn-primary']/@href").get()
+        # For pytorch
+        # module_name = response.xpath("//h1/text()").get()
+        # module_params = response.xpath("//dd[@class='field-odd']/ul[@class='simple']/li/p/strong/text()").getall()
+        print(module_name)
+        print(module_params)
 
-            if DOMAIN_URL not in downloadUrl:
-                downloadUrl = DOMAIN_URL + downloadUrl
-
-            response = requests.get(downloadUrl)
-            open("./"+paperName+".pdf", "wb").write(response.content)
-
-
-        except AttributeError:
-            self.err_pages.append(response.url)
-        except:
-            self.err_pages.append(response.url)
-
+        if module_params != None and module_name != None:
+            with open('hyperparams/hyperparams.csv', 'a') as f:
+                for i in module_params:
+                    writer = csv.writer(f)
+                    row = [module_name, i]
+                    writer.writerow(row)
+        
    
     def errback_httpbin(self, failure):
         url = ""
