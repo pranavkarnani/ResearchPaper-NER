@@ -1,15 +1,26 @@
+import os
 import json
-import requests
 import pandas as pd
 
 def get_papers_from_code_data():
 
-    data = json.load(open("evaluation-tables.json",'rb'))
+    data = json.load(open("/data/dataset/evaluation-tables.json",'rb'))
 
     all_task_names = []
     all_datasets = []
     all_model_names = []
     all_metrics = []
+
+    try:
+        if not os.path.exists("data/"):
+            os.makedirs("data/")
+
+        if not os.path.exists("/data/dataset"):
+            os.makedirs("/data/dataset/")
+    except:
+        pass
+
+    path = "/data/dataset/"
 
     for row in data:
         if 'Natural Language Processing' in row['categories']:
@@ -30,10 +41,10 @@ def get_papers_from_code_data():
     df_models = pd.DataFrame({"Models":list(set(all_model_names))})
     df_metrics = pd.DataFrame({"Metrics":list(set(all_metrics))})
 
-    df_tasks.to_csv("Task_Names.csv")
-    df_data.to_csv("Datasets.csv")
-    df_models.to_csv("Models.csv")
-    df_metrics.to_csv("Metrics.csv")
+    df_tasks.to_csv(path + "Task_Names.csv")
+    df_data.to_csv(path + "Datasets.csv")
+    df_models.to_csv(path + "Models.csv")
+    df_metrics.to_csv(path + "Metrics.csv")
 
 
 
