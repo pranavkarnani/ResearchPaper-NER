@@ -1,0 +1,11 @@
+transformers
+pandas
+bs4
+scrapy
+scrapy_useragents
+PyPDF2
+requests
+sklearn
+nltk
+fuzzywuzzy
+spacy

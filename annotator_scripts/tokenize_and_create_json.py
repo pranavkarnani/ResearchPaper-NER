@@ -3,7 +3,7 @@ import json
 from spacy.tokenizer import Tokenizer
 from spacy.lang.en import English
 
-papers_text_path = 'paper_text/'
+papers_text_path = './../crawlers/ACLScraper/papers/'
 tokenized_papers_path = 'tokenized_papers/'
 
 class TokenizeAndCreateJson():
@@ -27,7 +27,3 @@ class TokenizeAndCreateJson():
                 self.paper["paperid"] = file.strip('.txt')
                 json_object = json.dumps(self.paper)
                 f.write(json_object)
-
-if __name__ == '__main__':
-    tacj = TokenizeAndCreateJson()
-    tacj(10000)

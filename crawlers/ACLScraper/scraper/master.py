@@ -31,7 +31,8 @@ class PaperSpider(scrapy.Spider):
     def start_requests(self):
         
         self.setup()
-        
+        self.papers_parsed = 0
+
         start_urls = []
         start_urls.append("https://aclanthology.org/")
 
@@ -68,7 +69,7 @@ class PaperSpider(scrapy.Spider):
 
             response = requests.get(downloadUrl)
             fileNamePdf = "./papers/"+paperName+".pdf"
-            fileNameTxt = "./papers/"+paperName+".txt"
+            fileNameTxt = "./papers/"+str(self.papers_parsed)+".txt"
             open(fileNamePdf, "wb").write(response.content)
 
             reader = PdfReader(fileNamePdf)
@@ -76,7 +77,8 @@ class PaperSpider(scrapy.Spider):
                 for page in reader.pages:
                     f.write(page)
             os.remove(fileNamePdf)
-
+            self.papers_parsed += 1
+            
         except AttributeError:
             self.err_pages.append(response.url)
         except:

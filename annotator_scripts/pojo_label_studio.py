@@ -1,7 +1,6 @@
 from typing import List, Any
 from datetime import datetime
 
-
 class CompletedBy:
     id: int
     first_name: str

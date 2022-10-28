@@ -5,7 +5,7 @@ import json
 import time
 import glob
 import nltk
-# nltk.download('stopwords')
+nltk.download('stopwords')
 
 from nltk.corpus import stopwords
 
@@ -13,12 +13,13 @@ sheet_path = 'Keyword Lists.xlsx'
 tokenized_papers_path = ''
 
 class LabelStudioCreator:
-    def __init__(self, filename):
+    def __init__(self, filename, stopwords):
         self.filename = filename.split('/')[-1]
         self.word_to_named_entity = {}
         json_file = json.load(open(tokenized_papers_path + filename + '.json', 'r', encoding='utf-8'))
         self.lines = json_file['text']
         self.lines = self.lines.replace('\n ', '')
+        self.stopwords = stopwords
 
     def _read_sheets(self):
         datasets = pd.read_excel(sheet_path, sheet_name='Datasets', converters={'Datasets':str})
@@ -59,7 +60,7 @@ class LabelStudioCreator:
         for word in enumerate(wordList):
             endIndex = startIndex + len(word)
             value = None
-            if word not in stopwords:
+            if word not in self.stopwords:
                 value = self._assign_entity(word, datasets['Datasets'].tolist(), 'DatasetName', startIndex, endIndex)
                 value = self._assign_entity(word, metrics['Metrics'].tolist(), 'MetricName', startIndex, endIndex) if value is None else value
                 value = self._assign_entity(word, models['Models'].tolist(), 'MethodName', startIndex, endIndex) if value is None else value
@@ -68,7 +69,7 @@ class LabelStudioCreator:
 
             startIndex = endIndex + 1    
             if value is None:
-                stopwords.add(word)
+                self.stopwords.add(word)
                 continue
             result = Result(value, hash(word))
             results.append(result)
@@ -83,12 +84,12 @@ class LabelStudioCreator:
             f.write(json_data)
             f.write("]")
 
-if __name__ == '__main__':
-    start_time = time.time()
+
+def create_LabelStudio_json():
     files = sorted(glob.glob('tokenized_papers/*.json'), key = lambda x: int(x.strip('.json').strip('tokenized_papers/')))
     stopwords = set(stopwords.words('english'))
 
-    with open('/Users/pranavkarnani/ANLP/stopwords.txt', 'r') as f:
+    with open('stopwords.txt', 'r') as f:
         extra = f.readlines()
 
     extra = set(extra)
@@ -96,7 +97,5 @@ if __name__ == '__main__':
 
     for file in files[0:20]:
         print(file)
-        lsjc = LabelStudioCreator(file.split('.')[0])
+        lsjc = LabelStudioCreator(file.split('.')[0], stopwords)
         lsjc()
-        end_time = time.time()
-        print((end_time - start_time))
