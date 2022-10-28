@@ -1,7 +1,7 @@
 import os
 
-from HuggingFaceScraper.utils.strings import *
-from HuggingFaceScraper.scraper.master import crawl_url
+from utils.strings import *
+from scraper.master import crawl_url
 from twisted.internet import reactor
 
 def setup():

@@ -11,7 +11,7 @@ from twisted.internet.error import DNSLookupError
 from twisted.internet.error import TimeoutError
 from twisted.internet.defer import inlineCallbacks
 
-from HuggingFaceScraper.utils.strings import *
+from utils.strings import *
 
 class PaperSpider(scrapy.Spider):
     name = "paper-scraper"

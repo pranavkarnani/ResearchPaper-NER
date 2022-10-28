@@ -1,8 +1,7 @@
 import os
-import csv
 
-from ACLScraper.utils.strings import *
-from ACLScraper.scraper.master import crawl_url
+from utils.strings import *
+from scraper.master import crawl_url
 from twisted.internet import reactor
 
 def setup():

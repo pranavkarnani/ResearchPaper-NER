@@ -1,8 +1,6 @@
-import os
 import scrapy
 import logging
 import requests
-from PyPDF2 import PdfReader
 
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.log import configure_logging
@@ -13,7 +11,7 @@ from twisted.internet.error import DNSLookupError
 from twisted.internet.error import TimeoutError
 from twisted.internet.defer import inlineCallbacks
 
-from ACLScraper.utils.strings import *
+from utils.strings import *
 
 class PaperSpider(scrapy.Spider):
     name = "paper-scraper"
