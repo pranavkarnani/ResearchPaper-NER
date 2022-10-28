@@ -2,14 +2,13 @@ from fuzzywuzzy import fuzz
 import pandas as pd
 from pojo_label_studio import *
 import json
-import time
 import glob
 import nltk
 nltk.download('stopwords')
 
 from nltk.corpus import stopwords
 
-tokenized_papers_path = ''
+tokenized_papers_path = 'data/tokenized/'
 
 class LabelStudioCreator:
     def __init__(self, filename, stopwords):
@@ -21,7 +20,7 @@ class LabelStudioCreator:
         self.stopwords = stopwords
 
     def _read_sheets(self):
-        sheet_path = './../crawlers/'
+        sheet_path = 'data/dataset/'
         datasets = pd.read_csv(sheet_path + 'Task_Names.csv')['Task_Names']        
         metrics = pd.read_csv(sheet_path + 'Datasets.csv')['Datasets'].unique()
         models = pd.read_csv(sheet_path + 'Models.csv')['Models'].unique()
@@ -39,17 +38,6 @@ class LabelStudioCreator:
                 value = Value(startIndex, endIndex, word, [entity])
                 return value
         return None
-
-    # def _assign_entity_using_rapidfuzz(self, word, arr, entity, startIndex, endIndex):
-    #     if word in self.word_to_named_entity and self.word_to_named_entity[word] != 'O':
-    #         value = Value(startIndex, endIndex, word, [entity])
-    #         return value
-
-    #     model = PolyFuzz(self.rapidfuzz_matcher).match(arr, [word])
-    #     if True in (ele >= 0.85 for ele in model.get_matches()['Similarity'].tolist()):
-    #         self.word_to_named_entity[word] = entity
-    #         value = Value(startIndex, endIndex, word, [entity])
-    #         return value
 
     def __call__(self):
         datasets, metrics, models, methods, hyperparameters = self._read_sheets()
@@ -78,15 +66,15 @@ class LabelStudioCreator:
         completedBy = CompletedBy(int(self.filename) + 1)
         annotation = Annotation(int(self.filename) + 1, completedBy, results)
         labelStudio = LabelStudio(int(self.filename) + 1, data, [annotation], [])
-        with open('tokenized_papers_annotated/' + self.filename + '_annotated.json', 'w', encoding='utf-8') as f:
+        with open(tokenized_papers_path + self.filename + '_annotated.json', 'w', encoding='utf-8') as f:
             json_data = json.dumps(labelStudio.__dict__, default=lambda o: o.__dict__)
             f.write("[")
             f.write(json_data)
             f.write("]")
 
 
-def create_LabelStudio_json():
-    files = sorted(glob.glob('tokenized_papers/*.json'), key = lambda x: int(x.strip('.json').strip('tokenized_papers/')))
+def create_labelStudio_json(num_files):
+    files = sorted(glob.glob(tokenized_papers_path + '*.json'), key = lambda x: int(x.strip('.json').strip(tokenized_papers_path)))
     stopwords = set(stopwords.words('english'))
 
     with open('stopwords.txt', 'r') as f:
@@ -95,7 +83,7 @@ def create_LabelStudio_json():
     extra = set(extra)
     stopwords = stopwords.union(extra)
 
-    for file in files[0:20]:
+    for file in files[0:num_files]:
         print(file)
         lsjc = LabelStudioCreator(file.split('.')[0], stopwords)
         lsjc()

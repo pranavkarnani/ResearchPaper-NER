@@ -1,10 +1,11 @@
 import os
 from tokenize_and_create_json import TokenizeAndCreateJson
-from label_studio_creator import create_LabelStudio_json
+from label_studio_creator import create_labelStudio_json
+num_files = 10
 
-os.mkdir('tokenized_papers/')
+os.mkdir('data/tokenized_papers/')
 tacj = TokenizeAndCreateJson()
-tacj(10000)
+tacj(num_files)
 
 os.mkdir('tokenized_papers_annotated')
-create_LabelStudio_json()
+create_labelStudio_json(num_files)

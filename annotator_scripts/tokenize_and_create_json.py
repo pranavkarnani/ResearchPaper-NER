@@ -3,8 +3,8 @@ import json
 from spacy.tokenizer import Tokenizer
 from spacy.lang.en import English
 
-papers_text_path = './../crawlers/ACLScraper/papers/'
-tokenized_papers_path = 'tokenized_papers/'
+papers_text_path = 'data/text/'
+tokenized_papers_path = 'data/tokenized/'
 
 class TokenizeAndCreateJson():
     def __init__(self):
