@@ -19,3 +19,6 @@ def crawl_huggingface():
     setup()
     crawl_url()
     reactor.run()
+
+if __name__ == 'main':
+    crawl_huggingface()

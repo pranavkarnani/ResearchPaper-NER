@@ -22,3 +22,6 @@ def crawl_acl():
     setup()
     crawl_url()
     reactor.run()
+
+if __name__ == 'main':
+    crawl_acl()
