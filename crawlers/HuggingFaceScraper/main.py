@@ -9,8 +9,8 @@ def setup():
         if not os.path.exists("data/"):
             os.makedirs("data/")
 
-        if not os.path.exists("/data/dataset"):
-            os.makedirs("/data/dataset")
+        if not os.path.exists("./data/dataset"):
+            os.makedirs("./data/dataset")
     except:
         pass
 

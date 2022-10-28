@@ -9,12 +9,12 @@ def scrape_pytorch():
         if not os.path.exists("data/"):
             os.makedirs("data/")
 
-        if not os.path.exists("/data/dataset"):
-            os.makedirs("/data/dataset/")
+        if not os.path.exists("./data/dataset"):
+            os.makedirs("./data/dataset/")
     except:
         pass
 
-    file_pytorch = open('/data/dataset/pytorch_hyperparams.csv', 'w')
+    file_pytorch = open('./data/dataset/pytorch_hyperparams.csv', 'w')
     writer = csv.writer(file_pytorch)
     writer.writerow(['module', 'hyperparameter'])
 

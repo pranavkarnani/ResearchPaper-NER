@@ -15,7 +15,6 @@ from twisted.internet.defer import inlineCallbacks
 
 from ACLScraper.utils.strings import *
 
-
 class PaperSpider(scrapy.Spider):
     name = "paper-scraper"
     domain = DOMAIN_URL
@@ -26,7 +25,6 @@ class PaperSpider(scrapy.Spider):
     def start_requests(self):
         
         self.setup()
-        self.papers_parsed = 0
 
         start_urls = []
         start_urls.append("https://aclanthology.org/")
@@ -43,10 +41,9 @@ class PaperSpider(scrapy.Spider):
             url_links = response.xpath(url_xpath).getall()
             urls.extend(url_links)
 
-        if self.papers_parsed < 10:
-            for i in urls:
-                url = DOMAIN_URL + i
-                yield scrapy.Request(url = url, callback=self.parse, errback=self.errback_httpbin, dont_filter=True)
+        for i in urls:
+            url = DOMAIN_URL + i
+            yield scrapy.Request(url = url, callback=self.parse, errback=self.errback_httpbin, dont_filter=True)
 
     def parse(self, response):
         papers = response.xpath("//strong/a[@class='align-middle']/@href").getall()
@@ -64,16 +61,8 @@ class PaperSpider(scrapy.Spider):
                 downloadUrl = DOMAIN_URL + downloadUrl
 
             response = requests.get(downloadUrl)
-            fileNamePdf = "/data/pdf/"+paperName+".pdf"
-            fileNameTxt = "/data/text/"+str(self.papers_parsed)+".txt"
+            fileNamePdf = "./data/pdf/"+paperName+".pdf"
             open(fileNamePdf, "wb").write(response.content)
-
-            reader = PdfReader(fileNamePdf)
-            with open(fileNameTxt, 'w') as f:            
-                for page in reader.pages:
-                    f.write(page)
-            os.remove(fileNamePdf)
-            self.papers_parsed += 1
             
         except AttributeError:
             self.err_pages.append(response.url)
