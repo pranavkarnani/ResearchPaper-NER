@@ -20,7 +20,7 @@ class LabelStudioCreator:
         self.stopwords = stopwords
 
     def _read_sheets(self):
-        sheet_path = 'data/dataset/'
+        sheet_path = './data/dataset/'
         datasets = pd.read_csv(sheet_path + 'Task_Names.csv')['Task_Names']        
         metrics = pd.read_csv(sheet_path + 'Datasets.csv')['Datasets'].unique()
         models = pd.read_csv(sheet_path + 'Models.csv')['Models'].unique()
