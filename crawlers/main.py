@@ -15,8 +15,6 @@ def convert_pdf_to_text():
             for page in reader.pages:
                 f.write(page.extract_pages())
 
-crawl_acl()
-crawl_huggingface()
 scrape_pytorch()
 get_papers_from_code_data()
 convert_pdf_to_text()
