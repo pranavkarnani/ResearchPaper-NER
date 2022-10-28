@@ -20,5 +20,5 @@ def crawl_huggingface():
     crawl_url()
     reactor.run()
 
-if __name__ == 'main':
+if __name__ == '__main__':
     crawl_huggingface()
