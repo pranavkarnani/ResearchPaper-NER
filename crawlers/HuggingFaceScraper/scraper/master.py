@@ -48,7 +48,7 @@ class PaperSpider(scrapy.Spider):
         module_params = response.xpath("//span[@class='group flex space-x-1.5 items-start']/span/strong/text()").getall()
 
         if module_params != None and module_name != None:
-            with open('/data/dataset/hyperparams.csv', 'a') as f:
+            with open('./data/dataset/hyperparams.csv', 'a') as f:
                 for i in module_params:
                     writer = csv.writer(f)
                     row = [module_name, i]

@@ -4,7 +4,7 @@ import pandas as pd
 
 def get_papers_from_code_data():
 
-    data = json.load(open("/data/dataset/evaluation-tables.json",'rb'))
+    data = json.load(open("./data/dataset/evaluation-tables.json",'rb'))
 
     all_task_names = []
     all_datasets = []
@@ -12,15 +12,15 @@ def get_papers_from_code_data():
     all_metrics = []
 
     try:
-        if not os.path.exists("data/"):
-            os.makedirs("data/")
+        if not os.path.exists("./data/"):
+            os.makedirs("./data/")
 
-        if not os.path.exists("/data/dataset"):
-            os.makedirs("/data/dataset/")
+        if not os.path.exists("./data/dataset"):
+            os.makedirs("./data/dataset/")
     except:
         pass
 
-    path = "/data/dataset/"
+    path = "./data/dataset/"
 
     for row in data:
         if 'Natural Language Processing' in row['categories']:
