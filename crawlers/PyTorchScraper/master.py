@@ -1,11 +1,20 @@
 from bs4 import BeautifulSoup as bs
+import os
 import requests
 import csv
 
-
 def scrape_pytorch():
     
-    file_pytorch = open('pytorch_hyperparams.csv', 'w')
+    try:
+        if not os.path.exists("data/"):
+            os.makedirs("data/")
+
+        if not os.path.exists("/data/dataset"):
+            os.makedirs("/data/dataset/")
+    except:
+        pass
+
+    file_pytorch = open('/data/dataset/pytorch_hyperparams.csv', 'w')
     writer = csv.writer(file_pytorch)
     writer.writerow(['module', 'hyperparameter'])
 

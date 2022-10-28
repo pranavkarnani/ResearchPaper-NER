@@ -1,9 +1,6 @@
 import os
-import csv
-import time
 import scrapy
 import logging
-import unicodedata
 import requests
 from PyPDF2 import PdfReader
 
@@ -16,9 +13,7 @@ from twisted.internet.error import DNSLookupError
 from twisted.internet.error import TimeoutError
 from twisted.internet.defer import inlineCallbacks
 
-from collections import defaultdict
 from ACLScraper.utils.strings import *
-from bs4 import BeautifulSoup
 
 
 class PaperSpider(scrapy.Spider):
@@ -48,9 +43,10 @@ class PaperSpider(scrapy.Spider):
             url_links = response.xpath(url_xpath).getall()
             urls.extend(url_links)
 
-        for i in urls:
-            url = DOMAIN_URL + i
-            yield scrapy.Request(url = url, callback=self.parse, errback=self.errback_httpbin, dont_filter=True)
+        if self.papers_parsed < 10:
+            for i in urls:
+                url = DOMAIN_URL + i
+                yield scrapy.Request(url = url, callback=self.parse, errback=self.errback_httpbin, dont_filter=True)
 
     def parse(self, response):
         papers = response.xpath("//strong/a[@class='align-middle']/@href").getall()
@@ -68,8 +64,8 @@ class PaperSpider(scrapy.Spider):
                 downloadUrl = DOMAIN_URL + downloadUrl
 
             response = requests.get(downloadUrl)
-            fileNamePdf = "./papers/"+paperName+".pdf"
-            fileNameTxt = "./papers/"+str(self.papers_parsed)+".txt"
+            fileNamePdf = "/data/pdf/"+paperName+".pdf"
+            fileNameTxt = "/data/text/"+str(self.papers_parsed)+".txt"
             open(fileNamePdf, "wb").write(response.content)
 
             reader = PdfReader(fileNamePdf)

@@ -9,3 +9,4 @@ sklearn
 nltk
 fuzzywuzzy
 spacy
+torch
