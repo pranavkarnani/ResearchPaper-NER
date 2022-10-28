@@ -1,8 +1,8 @@
 import os
 import csv
 
-from utils.strings import *
-from scraper.master import crawl_url
+from ACLScraper.utils.strings import *
+from ACLScraper.scraper.master import crawl_url
 from twisted.internet import reactor
 
 def setup():
@@ -23,7 +23,7 @@ def setup():
         tsv_writer = csv.writer(papers, delimiter='\t', lineterminator='\n')
         tsv_writer.writerow([paperKeys['name'], paperKeys['url'], paperKeys['download'], paperKeys['abstract']])
 
-
-setup()
-crawl_url()
-reactor.run()
+def crawl_acl():
+    setup()
+    crawl_url()
+    reactor.run()

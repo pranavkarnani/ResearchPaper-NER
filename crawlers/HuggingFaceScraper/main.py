@@ -1,8 +1,8 @@
 import os
 import csv
 
-from utils.strings import *
-from scraper.master import crawl_url
+from HuggingFaceScraper.utils.strings import *
+from HuggingFaceScraper.scraper.master import crawl_url
 from twisted.internet import reactor
 
 def setup():
@@ -23,7 +23,7 @@ def setup():
         tsv_writer = csv.writer(papers, delimiter=',', lineterminator='\n')
         tsv_writer.writerow(['module', 'parameter'])
 
-
-setup()
-crawl_url()
-reactor.run()
+def crawl_huggingface():
+    setup()
+    crawl_url()
+    reactor.run()

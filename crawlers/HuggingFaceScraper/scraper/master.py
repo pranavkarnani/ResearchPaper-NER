@@ -16,7 +16,7 @@ from twisted.internet.error import TimeoutError
 from twisted.internet.defer import inlineCallbacks
 
 from collections import defaultdict
-from utils.strings import *
+from HuggingFaceScraper.utils.strings import *
 from bs4 import BeautifulSoup
 
 

@@ -3,7 +3,7 @@ import requests
 import csv
 
 
-def start_requests():
+def scrape_pytorch():
     
     file_pytorch = open('./pytorch_hyperparams.csv', 'w')
     writer = csv.writer(file_pytorch)
@@ -29,5 +29,3 @@ def start_requests():
 
 
     file_pytorch.close()
-
-start_requests()
