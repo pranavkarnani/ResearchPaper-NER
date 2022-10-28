@@ -22,7 +22,8 @@ class LabelStudioCreator:
 
     def _read_sheets(self):
         sheet_path = './../crawlers/'
-        datasets = pd.read_csv(sheet_path + 'Task_Names.csv')['Task_Names']        metrics = pd.read_csv(sheet_path + 'Datasets.csv')['Datasets'].unique()
+        datasets = pd.read_csv(sheet_path + 'Task_Names.csv')['Task_Names']        
+        metrics = pd.read_csv(sheet_path + 'Datasets.csv')['Datasets'].unique()
         models = pd.read_csv(sheet_path + 'Models.csv')['Models'].unique()
         methods = pd.read_csv(sheet_path + 'Metrics.csv')['Metrics'].unique()
         hyperparameters = pd.read_csv(sheet_path + 'pytorch_hyperparams.csv')['hyperparameter'].unique()
