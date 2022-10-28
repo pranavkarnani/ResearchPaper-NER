@@ -5,6 +5,7 @@ import scrapy
 import logging
 import unicodedata
 import requests
+from PyPDF2 import PdfReader
 
 from scrapy.crawler import CrawlerRunner
 from scrapy.utils.log import configure_logging
@@ -66,8 +67,15 @@ class PaperSpider(scrapy.Spider):
                 downloadUrl = DOMAIN_URL + downloadUrl
 
             response = requests.get(downloadUrl)
-            open("./"+paperName+".pdf", "wb").write(response.content)
+            fileNamePdf = "./papers/"+paperName+".pdf"
+            fileNameTxt = "./papers/"+paperName+".txt"
+            open(fileNamePdf, "wb").write(response.content)
 
+            reader = PdfReader(fileNamePdf)
+            with open(fileNameTxt, 'w') as f:            
+                for page in reader.pages:
+                    f.write(page)
+            os.remove(fileNamePdf)
 
         except AttributeError:
             self.err_pages.append(response.url)
