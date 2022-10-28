@@ -8,4 +8,3 @@ tacj(10000)
 
 os.mkdir('tokenized_papers_annotated')
 create_LabelStudio_json()
-

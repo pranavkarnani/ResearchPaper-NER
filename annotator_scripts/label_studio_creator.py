@@ -9,7 +9,6 @@ nltk.download('stopwords')
 
 from nltk.corpus import stopwords
 
-sheet_path = 'Keyword Lists.xlsx'
 tokenized_papers_path = ''
 
 class LabelStudioCreator:
@@ -22,11 +21,11 @@ class LabelStudioCreator:
         self.stopwords = stopwords
 
     def _read_sheets(self):
-        datasets = pd.read_excel(sheet_path, sheet_name='Datasets', converters={'Datasets':str})
-        metrics = pd.read_excel(sheet_path, sheet_name='Metrics', converters={'Metrics':str})
-        models = pd.read_excel(sheet_path, sheet_name='Models', converters={'Models':str})
-        methods = pd.read_excel(sheet_path, sheet_name='Methods', converters={'Methods':str})
-        hyperparameters = pd.read_excel(sheet_path, sheet_name='Hyperparameters', converters={'Hyperparameters':str})
+        sheet_path = './../crawlers/'
+        datasets = pd.read_csv(sheet_path + 'Task_Names.csv')['Task_Names']        metrics = pd.read_csv(sheet_path + 'Datasets.csv')['Datasets'].unique()
+        models = pd.read_csv(sheet_path + 'Models.csv')['Models'].unique()
+        methods = pd.read_csv(sheet_path + 'Metrics.csv')['Metrics'].unique()
+        hyperparameters = pd.read_csv(sheet_path + 'pytorch_hyperparams.csv')['hyperparameter'].unique()
         return datasets, metrics, models, methods, hyperparameters
 
     def _assign_entity(self, word, arr, entity, startIndex, endIndex):
@@ -61,11 +60,11 @@ class LabelStudioCreator:
             endIndex = startIndex + len(word)
             value = None
             if word not in self.stopwords:
-                value = self._assign_entity(word, datasets['Datasets'].tolist(), 'DatasetName', startIndex, endIndex)
-                value = self._assign_entity(word, metrics['Metrics'].tolist(), 'MetricName', startIndex, endIndex) if value is None else value
-                value = self._assign_entity(word, models['Models'].tolist(), 'MethodName', startIndex, endIndex) if value is None else value
-                value = self._assign_entity(word, methods['Methods'].tolist(), 'TaskName', startIndex, endIndex) if value is None else value
-                value = self._assign_entity(word, hyperparameters['Hyperparameters'].tolist(), 'HyperparameterName', startIndex, endIndex) if value is None else value
+                value = self._assign_entity(word, datasets.tolist(), 'DatasetName', startIndex, endIndex)
+                value = self._assign_entity(word, metrics.tolist(), 'MetricName', startIndex, endIndex) if value is None else value
+                value = self._assign_entity(word, models.tolist(), 'MethodName', startIndex, endIndex) if value is None else value
+                value = self._assign_entity(word, methods.tolist(), 'TaskName', startIndex, endIndex) if value is None else value
+                value = self._assign_entity(word, hyperparameters.tolist(), 'HyperparameterName', startIndex, endIndex) if value is None else value
 
             startIndex = endIndex + 1    
             if value is None:

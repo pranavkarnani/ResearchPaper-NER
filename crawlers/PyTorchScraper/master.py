@@ -5,10 +5,10 @@ import csv
 
 def scrape_pytorch():
     
-    file_pytorch = open('./pytorch_hyperparams.csv', 'w')
+    file_pytorch = open('pytorch_hyperparams.csv', 'w')
     writer = csv.writer(file_pytorch)
     writer.writerow(['module', 'hyperparameter'])
-    # start_urls.append("https://huggingface.co/docs/transformers/model_doc/gpt2")
+
     base_url = "https://pytorch.org/docs/stable/nn.html"
     response = requests.get(base_url)
     soup = bs(response.text, 'html.parser')
