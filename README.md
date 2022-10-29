@@ -21,11 +21,11 @@ PS: The annotator scripts can be made robust by cleaning the keywords extracted 
 
 ### Steps to Run:
 1. Download the dataset from papers with code in the link - https://production-media.paperswithcode.com/about/evaluation-tables.json.gz
-2. Move the downloaded file inside the ResearchPaper-NER directory
+2. Move the downloaded file inside the ResearchPaper-NER directory and rename it to evaluation-tables.json
 3. Run the following commands:
-   3.1 python crawlers/ACLScraper/main.py
-   3.2 python crawlers/HuggingFaceScraper/main.py
-   3.3 python crawlers/main.py
+   3.1 python crawlers/ACLScraper/main.py \n
+   3.2 python crawlers/HuggingFaceScraper/main.py \n
+   3.3 python crawlers/main.py \n
          
 ### Outputs:
 1. All papers from ACLAnthonlogy.org would be downloaded in the folder named data. The pdf and text files will be stored in different directories.
