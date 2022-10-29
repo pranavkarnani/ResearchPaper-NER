@@ -75,15 +75,15 @@ class LabelStudioCreator:
 
 def create_labelStudio_json(num_files):
     files = sorted(glob.glob(tokenized_papers_path + '*.json'), key = lambda x: int(x.strip('.json').strip(tokenized_papers_path)))
-    stopwords = set(stopwords.words('english'))
+    stop_words = set(stopwords.words('english'))
 
     with open('stopwords.txt', 'r') as f:
         extra = f.readlines()
 
     extra = set(extra)
-    stopwords = stopwords.union(extra)
+    stop_words = stop_words.union(extra)
 
     for file in files[0:num_files]:
         print(file)
-        lsjc = LabelStudioCreator(file.split('.')[0], stopwords)
+        lsjc = LabelStudioCreator(file.split('.')[0], stop_words)
         lsjc()
