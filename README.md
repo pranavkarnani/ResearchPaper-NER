@@ -22,7 +22,7 @@ PS: The annotator scripts can be made robust by cleaning the keywords extracted 
 ### Steps to Run:
 1. Download the dataset from papers with code in the link - https://production-media.paperswithcode.com/about/evaluation-tables.json.gz
 2. Move the downloaded file inside the ResearchPaper-NER directory and rename it to evaluation-tables.json
-3. Run the following commands:
+3. Run the following commands: <br />
    3.1 python crawlers/ACLScraper/main.py <br />
    3.2 python crawlers/HuggingFaceScraper/main.py <br />
    3.3 python crawlers/main.py <br />
